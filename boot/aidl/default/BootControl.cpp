@@ -116,12 +116,10 @@ ScopedAStatus BootControl::isSlotMarkedSuccessful(int32_t in_slot, bool* _aidl_r
 }
 
 ScopedAStatus BootControl::markBootSuccessful() {
-    if (!impl_.MarkBootSuccessful()) {
-        return ScopedAStatus::fromServiceSpecificErrorWithMessage(COMMAND_FAILED,
-                                                                  "Operation failed");
-    }
+    LOG(INFO) << "BootControl: Faking markBootSuccessful()";
     return ScopedAStatus::ok();
 }
+
 
 ScopedAStatus BootControl::setActiveBootSlot(int32_t in_slot) {
     LOG(INFO) << "BootControl: Ignoring setActiveBootSlot(" << in_slot << "), always staying on slot A (0)";
