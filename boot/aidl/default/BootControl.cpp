@@ -29,14 +29,18 @@ BootControl::BootControl() {
 }
 
 ScopedAStatus BootControl::getActiveBootSlot(int32_t* _aidl_return) {
-    *_aidl_return = impl_.GetActiveBootSlot();
+    *_aidl_return = 0; // Force slot_a
+    LOG(INFO) << "BootControl: getActiveBootSlot() hardcoded to slot A (0)";
     return ScopedAStatus::ok();
 }
 
+
 ScopedAStatus BootControl::getCurrentSlot(int32_t* _aidl_return) {
-    *_aidl_return = impl_.GetCurrentSlot();
+    *_aidl_return = 0; // Force slot_a
+    LOG(INFO) << "BootControl: getCurrentSlot() hardcoded to slot A (0)";
     return ScopedAStatus::ok();
 }
+
 
 ScopedAStatus BootControl::getNumberSlots(int32_t* _aidl_return) {
     *_aidl_return = impl_.GetNumberSlots();
@@ -120,16 +124,10 @@ ScopedAStatus BootControl::markBootSuccessful() {
 }
 
 ScopedAStatus BootControl::setActiveBootSlot(int32_t in_slot) {
-    if (!impl_.IsValidSlot(in_slot)) {
-        return ScopedAStatus::fromServiceSpecificErrorWithMessage(
-                INVALID_SLOT, (std::string("Invalid slot ") + std::to_string(in_slot)).c_str());
-    }
-    if (!impl_.SetActiveBootSlot(in_slot)) {
-        return ScopedAStatus::fromServiceSpecificErrorWithMessage(COMMAND_FAILED,
-                                                                  "Operation failed");
-    }
+    LOG(INFO) << "BootControl: Ignoring setActiveBootSlot(" << in_slot << "), always staying on slot A (0)";
     return ScopedAStatus::ok();
 }
+
 
 ScopedAStatus BootControl::setSlotAsUnbootable(int32_t in_slot) {
     if (!impl_.IsValidSlot(in_slot)) {
